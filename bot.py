@@ -18,13 +18,19 @@ async def on_ready():
 @tasks.loop(minutes=5)
 async def bannner():
 
-    members = [member for member in bot.get_guild(898766854552690789).members if member.status != nextcord.Status.offline]
+    members = [member for member in bot.get_guild(898766854552690789).members if member.status != nextcord.Status.offline and member.bot == False]
+    offline = [member for member in bot.get_guild(898766854552690789).members if member.status == nextcord.Status.offline]
+    
+    print("Online: " + str(len(members)))
+    print("Offline: " + str(len(offline)))
+    
+    
     
     img = Image.open("Banner.png")
     
     draw = ImageDraw.Draw(img)
     draw.text((52, 180), f"{len(members)}", fill=(255, 255, 255), font=ImageFont.truetype("AmsiPro-Black.ttf", 32))
-    draw.text((213, 180), f"{bot.get_guild(898766854552690789).member_count}", fill=(255, 255, 255), font=ImageFont.truetype("AmsiPro-Black.ttf", 32))
+    draw.text((213, 180), f"{len(offline)}", fill=(255, 255, 255), font=ImageFont.truetype("AmsiPro-Black.ttf", 32))
     
     buffer = BytesIO()
     img.save(buffer, "png")
